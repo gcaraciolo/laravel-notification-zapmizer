@@ -22,10 +22,10 @@ class Zapmizer
     /** @var string Zapmizer Bot API Base URI */
     protected string $apiBaseUri;
 
-    public function __construct(?string $token = null, ?HttpClient $httpClient = null, ?string $apiBaseUri = null)
+    public function __construct(?string $token = null, ?HttpClient $httpClient = null, ?string $apiBaseUri = null, protected ?string $apiVersion = null)
     {
         $this->token = $token;
-        $this->http = new HttpClient();
+        $this->http = $httpClient;
         $this->setApiBaseUri($apiBaseUri ?? 'https://app.zapmizer.com/api/');
     }
 
@@ -106,9 +106,12 @@ class Zapmizer
         }
 
         try {
-            return $this->httpClient()->post($this->getApiBaseUri().'/messages', [
+            return $this->httpClient()->post($this->getApiBaseUri() . '/messages', [
                 'form_params' => $params,
-                'headers' => ['Authorization' => 'Bearer '.$this->token],
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $this->token,
+                    'api-version' => $this->apiVersion,
+                ],
             ]);
         } catch (ClientException $exception) {
             throw CouldNotSendNotification::zapmizerRespondedWithAnError($exception);
@@ -139,9 +142,12 @@ class Zapmizer
                 ];
             }
 
-            return $this->httpClient()->post($this->getApiBaseUri().'/messages', [
+            return $this->httpClient()->post($this->getApiBaseUri() . '/messages', [
                 'multipart' => $multipart,
-                'headers' => ['Authorization' => 'Bearer '.$this->token],
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $this->token,
+                    'api-version' => $this->apiVersion,
+                ],
             ]);
         } catch (ClientException $exception) {
             throw CouldNotSendNotification::zapmizerRespondedWithAnError($exception);
