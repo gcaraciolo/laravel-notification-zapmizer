@@ -6,7 +6,10 @@ use Illuminate\Support\Str;
 use GuzzleHttp\Client as HttpClient;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Notifications\ChannelManager;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Contracts\Foundation\Application;
+
 
 class ZapmizerServiceProvider extends ServiceProvider
 {
@@ -15,10 +18,11 @@ class ZapmizerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(Zapmizer::class, static fn () => new Zapmizer(
-            config('zapmizer.api_token'),
+        $this->app->bind(Zapmizer::class, fn (Application $app, $config) => new Zapmizer(
+            Arr::get($config, 'api_token', config('zapmizer.api_token')),
             app(HttpClient::class),
-            config('zapmizer.base_uri')
+            Arr::get($config, 'base_uri', config('zapmizer.base_uri')),
+            Arr::get($config, 'api_version')
         ));
 
         Notification::resolved(static function (ChannelManager $service) {
