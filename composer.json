@@ -19,7 +19,8 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.0",
-        "phpunit/phpunit": "^10.0"
+        "phpunit/phpunit": "^10.0",
+        "orchestra/testbench": "^8.18|^9.0|^10.0"
     },
     "autoload": {
         "psr-4": {
@@ -30,11 +31,6 @@
         "psr-4": {
             "NotificationChannels\\Zapmizer\\Test\\": "tests"
         }
-    },
-    "scripts": {
-        "test": "phpunit",
-        "test:coverage": "phpunit --coverage-text --coverage-clover=coverage.clover",
-        "post-install-cmd": "php artisan vendor:publish --provider=\"NotificationChannels\\Zapmizer\\ZapmizerServiceProvider\" --tag=config"
     },
     "config": {
         "sort-packages": true
