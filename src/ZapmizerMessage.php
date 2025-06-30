@@ -15,9 +15,10 @@ class ZapmizerMessage
     public function __construct(
         public readonly string $from = '',
         public readonly string $to = '',
-        array $params = ['type' => 'chat']
+        array $params = ['type' => 'chat'],
+        ?Zapmizer $zapmizer = null
     ) {
-        $this->zapmizer = app(Zapmizer::class);
+        $this->zapmizer = $zapmizer ?? app(Zapmizer::class);
 
         $this->params = array_merge($params, [
             'from' => $this->from,
@@ -26,9 +27,9 @@ class ZapmizerMessage
         ]);
     }
 
-    public static function create(string $from = '', string $to = '', array $params = ['type' => 'chat']): self
+    public static function create(string $from = '', string $to = '', array $params = ['type' => 'chat'], ?Zapmizer $zapmizer = null): self
     {
-        return new self($from, $to, $params);
+        return new self($from, $to, $params, $zapmizer);
     }
 
     public function type(string $type): self

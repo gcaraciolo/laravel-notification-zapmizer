@@ -6,6 +6,7 @@ use Exception;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException;
 use NotificationChannels\Zapmizer\Exceptions\CouldNotSendNotification;
+use NotificationChannels\Zapmizer\Services\MessageService;
 use Psr\Http\Message\ResponseInterface;
 
 /**
